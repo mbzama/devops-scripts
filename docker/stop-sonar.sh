@@ -1,0 +1,1 @@
+docker-compose -f jenkins-sonar.yml sonar down

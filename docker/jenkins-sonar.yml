@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    networks:
+      - sonarnet
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+
+  sonar:
+    image: sonarqube:7.6-community 
+    networks:
+      - sonarnet
+    ports:
+      - '9000:9000'
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - sonar.jdbc.username=sonar
+      - sonar.jdbc.password=sonar
+      - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
+
+  db:
+    image: postgres
+    networks:
+      - sonarnet
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - ./postgresql:/var/lib/postgresql
+      - ./postgresql_data:/var/lib/postgresql/data
+
+networks:
+  sonarnet:
+    driver: bridge
