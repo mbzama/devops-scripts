@@ -1,1 +1,1 @@
-docker-compose -f jenkins-sonar.yml jenkins down
+docker-compose -f jenkins-sonar.yml stop jenkins
